@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <f:entry title="Notify Build Start">
+        <f:checkbox name="sqsStartNotification" value="true" checked="${instance.getStartNotification()}"/>
+    </f:entry>
+
+    <f:entry title="Notify Aborted">
+        <f:checkbox name="sqsNotifyAborted" value="true" checked="${instance.getNotifyAborted()}"/>
+    </f:entry>
+
+    <f:entry title="Notify Failure">
+        <f:checkbox name="sqsNotifyFailure" value="true" checked="${instance.getNotifyFailure()}"/>
+    </f:entry>
+
+    <f:entry title="Notify Not Built">
+        <f:checkbox name="sqsNotifyNotBuilt" value="true" checked="${instance.getNotifyNotBuilt()}"/>
+    </f:entry>
+
+    <f:entry title="Notify Success">
+        <f:checkbox name="sqsNotifySuccess" value="true" checked="${instance.getNotifySuccess()}"/>
+    </f:entry>
+
+    <f:entry title="Notify Unstable">
+        <f:checkbox name="sqsNotifyUnstable" value="true" checked="${instance.getNotifyUnstable()}"/>
+    </f:entry>
+
+    <f:entry title="Notify Back To Normal">
+        <f:checkbox name="sqsNotifyBackToNormal" value="true" checked="${instance.getNotifyBackToNormal()}"/>
+    </f:entry>
+
+    <f:advanced>
+        <f:entry title="Notify Repeated Failure">
+            <f:checkbox name="sqsNotifyRepeatedFailure" value="true"
+                        checked="${instance.getNotifyRepeatedFailure()}"/>
+        </f:entry>
+        <f:entry title="Include Test Summary">
+            <f:checkbox name="includeTestSummary" value="true" checked="${instance.includeTestSummary()}"/>
+        </f:entry>
+
+        <f:optionalBlock name="includeCustomMessage" title="Include Custom Message" checked="${instance.includeCustomMessage()}">
+            <f:entry title="Custom Message" help="/plugin/sqs/help-projectConfig-sqsCustomMessage.html">
+                <f:textarea name="customMessage" value="${instance.getCustomMessage()}"/>
+            </f:entry>
+        </f:optionalBlock>
+
+        <f:entry title="Notification message includes" description="What commit information to include into notification message">
+            <select class="setting-input" name="slackCommitInfoChoice">
+                <j:forEach var="i" items="${descriptor.COMMIT_INFO_CHOICES}">
+                    <f:option selected="${instance.getCommitInfoChoice()==i}">${i.getDisplayName()}</f:option>
+                </j:forEach>
+            </select>
+        </f:entry>
+
+        <f:entry title="AWS SQS Queue URL" help="${rootURL}/plugin/sqs/help-projectConfig-sqsQueueUrl.html">
+            <f:textbox name="endpoint" value="${instance.getEndpoint()}" />
+        </f:entry>
+
+        <f:entry title="Chat Channel" help="${rootURL}/plugin/sqs/help-projectConfig-sqsRoom.html">
+            <f:textbox name="room" value="${instance.getRoom()}" />
+        </f:entry>
+
+    </f:advanced>
+</j:jelly>

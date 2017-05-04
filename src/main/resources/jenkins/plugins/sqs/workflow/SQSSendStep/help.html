@@ -1,0 +1,9 @@
+<div>
+    Simple step for sending a SQS message to specified queue URL.<br>
+    Use the advanced settings to override the SQS Plugin global configuration to include: <code>SQS queue url</code> and <code>channel</code>.<br>
+
+    Usage Example:<br>
+    <code>
+        sqsSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER}  (<${env.BUILD_URL}|Open>)"
+    </code>
+</div>

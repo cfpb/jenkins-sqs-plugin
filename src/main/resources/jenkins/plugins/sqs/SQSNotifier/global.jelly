@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <!--
+    This Jelly script is used to produce the global configuration option.
+
+    Hudson uses a set of tag libraries to provide uniformity in forms.
+    To determine where this tag is defined, first check the namespace URI,
+    and then look under $HUDSON/views/. For example, <f:section> is defined
+    in $HUDSON/views/lib/form/section.jelly.
+
+    It's also often useful to just check other similar scripts to see what
+    tags they use. Views are always organized according to its owner class,
+    so it should be straightforward to find them.
+  -->
+<f:section title="Global SQS Notifier Settings" name="sqs">
+    <f:entry title="AWS Access Key ID" help="${rootURL}/plugin/sqs/help-globalConfig-sqsAwsAccessKeyId.html">
+        <f:textbox field="secretKeyId" name="secretKeyId" value="${descriptor.getSecretKeyId()}" />
+    </f:entry>
+    <f:entry title="Secret key" help="/plugin/s3/help-secretkey.html">
+      <input class="setting-input" name="secretKey"
+              type="password" value="${descriptor.getSecretKey()}"
+      />
+    </f:entry>
+    <f:entry title="AWS SQS Queue URL" help="${rootURL}/plugin/sqs/help-globalConfig-sqsQueueUrl.html">
+        <f:textbox field="endpoint" name="endpoint" value="${descriptor.getEndpoint()}" />
+    </f:entry>
+    <f:entry title="Channel" help="${rootURL}/plugin/sqs/help-globalConfig-sqsRoom.html">
+        <f:textbox field="room" name="room" value="${descriptor.getRoom()}" />
+    </f:entry>
+    <f:entry title="Build Server URL" help="${rootURL}/plugin/sqs/help-globalConfig-sqsBuildServerUrl.html">
+        <f:textbox field="buildServerUrl" name="sqsBuildServerUrl" value="${descriptor.getBuildServerUrl()}" />
+    </f:entry>
+  </f:section>
+</j:jelly>
