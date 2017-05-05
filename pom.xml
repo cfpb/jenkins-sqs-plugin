@@ -17,11 +17,11 @@
         <version>2.11</version>
     </parent>
 
-    <artifactId>sqs</artifactId>
+    <artifactId>sqs-notification</artifactId>
     <packaging>hpi</packaging>
     <version>1.0.0</version>
-    <name>SQS Plugin</name>
-    <description>A Build status publisher that send a message to SQS</description>
+    <name>SQS Notification Plugin</name>
+    <description>A build status publisher that sends messages to AWS SQS</description>
     <url>https://wiki.jenkins-ci.org/display/JENKINS/SQS+Plugin</url>
 
     <properties>
