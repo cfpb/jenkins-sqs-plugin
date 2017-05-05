@@ -55,6 +55,8 @@ public class SQSSendStepTest {
         SQSSendStep sqsSendStep = new SQSSendStep("message");
         sqsSendStep.setEndpoint("endpoint");
         sqsSendStep.setChannel("channel");
+        sqsSendStep.setSecretKeyId("keyid");
+        sqsSendStep.setSecretKey("key");
         sqsSendStep.setColor("good");
         stepExecution.step = sqsSendStep;
 
@@ -86,6 +88,8 @@ public class SQSSendStepTest {
 
         when(sqsDescMock.getEndpoint()).thenReturn("globalEndpoint");
         when(sqsDescMock.getRoom()).thenReturn("globalChannel");
+        when(sqsDescMock.getSecretKey()).thenReturn("globalKey");
+        when(sqsDescMock.getSecretKeyId()).thenReturn("globalKeyId");
 
         when(taskListenerMock.getLogger()).thenReturn(printStreamMock);
         doNothing().when(printStreamMock).println();
@@ -93,10 +97,12 @@ public class SQSSendStepTest {
         when(stepExecution.getSQSService(anyString(), anyString(), anyString(), anyString())).thenReturn(sqsServiceMock);
 
         stepExecution.run();
-        verify(stepExecution, times(1)).getSQSService("globalEndpoint","globalChannel", "keyid", "key");
+        verify(stepExecution, times(1)).getSQSService("globalEndpoint","globalChannel", "globalKeyId", "globalKey");
         verify(sqsServiceMock, times(1)).publish("message", "");
         assertNull(stepExecution.step.getEndpoint());
         assertNull(stepExecution.step.getChannel());
+        assertNull(stepExecution.step.getSecretKeyId());
+        assertNull(stepExecution.step.getSecretKey());
         assertNull(stepExecution.step.getColor());
     }
 
