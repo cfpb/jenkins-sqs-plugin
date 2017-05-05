@@ -54,11 +54,11 @@
         </f:entry>
 
         <f:entry title="AWS SQS Queue URL" help="${rootURL}/plugin/sqs/help-projectConfig-sqsQueueUrl.html">
-            <f:textbox name="endpoint" value="${instance.getEndpoint()}" />
+            <f:textbox name="endpoint" field="endpoint" value="${instance.getEndpoint()}" />
         </f:entry>
 
         <f:entry title="Chat Channel" help="${rootURL}/plugin/sqs/help-projectConfig-sqsRoom.html">
-            <f:textbox name="room" value="${instance.getRoom()}" />
+            <f:textbox name="room" field="room" value="${instance.getRoom()}" />
         </f:entry>
 
     </f:advanced>
