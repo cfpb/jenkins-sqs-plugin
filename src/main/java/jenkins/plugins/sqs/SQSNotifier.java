@@ -358,8 +358,8 @@ public class SQSNotifier extends Notifier {
 	    if (sr == null) {
 		return null;
 	    }
-	    String endpoint = sr.getParameter("sqsEndpoint");
-	    String room = sr.getParameter("sqsRoom");
+	    String endpoint = sr.getParameter("endpoint");
+	    String room = sr.getParameter("room");
       String secretKeyId = sr.getParameter("secretKeyId");
       String secretKey = sr.getParameter("secretKey");
 	    boolean startNotification = "true".equals(sr.getParameter("sqsStartNotification"));
