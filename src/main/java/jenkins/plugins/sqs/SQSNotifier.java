@@ -50,11 +50,11 @@ public class SQSNotifier extends Notifier {
     private boolean notifyFailure;
     private boolean notifyBackToNormal;
     private boolean notifyRepeatedFailure;
-    private boolean includeTestSummary;
+    private boolean sqsIncludeTestSummary;
     transient private boolean showCommitList;
-    private CommitInfoChoice commitInfoChoice;
-    private boolean includeCustomMessage;
-    private String customMessage;
+    private CommitInfoChoice sqsCommitInfoChoice;
+    private boolean includeCustomSQSMessage;
+    private String customSQSMessage;
 
     @Override
     public DescriptorImpl getDescriptor() {
@@ -99,8 +99,8 @@ public class SQSNotifier extends Notifier {
 	return notifySuccess;
     }
 
-    public CommitInfoChoice getCommitInfoChoice() {
-	return commitInfoChoice;
+    public CommitInfoChoice getSQSCommitInfoChoice() {
+	return sqsCommitInfoChoice;
     }
 
     public boolean getNotifyAborted() {
@@ -123,20 +123,20 @@ public class SQSNotifier extends Notifier {
 	return notifyBackToNormal;
     }
 
-    public boolean includeTestSummary() {
-	return includeTestSummary;
+    public boolean sqsIncludeTestSummary() {
+	return sqsIncludeTestSummary;
     }
 
     public boolean getNotifyRepeatedFailure() {
 	return notifyRepeatedFailure;
     }
 
-    public boolean includeCustomMessage() {
-	return includeCustomMessage;
+    public boolean includeCustomSQSMessage() {
+	return includeCustomSQSMessage;
     }
 
-    public String getCustomMessage() {
-	return customMessage;
+    public String getCustomSQSMessage() {
+	return customSQSMessage;
     }
 
     public void setEndpoint(@CheckForNull String endpoint) {
@@ -171,8 +171,8 @@ public class SQSNotifier extends Notifier {
 	this.notifySuccess = notifySuccess;
     }
 
-    @DataBoundSetter public void setCommitInfoChoice(CommitInfoChoice commitInfoChoice) {
-	this.commitInfoChoice = commitInfoChoice;
+    @DataBoundSetter public void setSQSCommitInfoChoice(CommitInfoChoice sqsCommitInfoChoice) {
+	this.sqsCommitInfoChoice = sqsCommitInfoChoice;
     }
 
     @DataBoundSetter public void setNotifyAborted(boolean notifyAborted) {
@@ -195,20 +195,20 @@ public class SQSNotifier extends Notifier {
 	this.notifyBackToNormal = notifyBackToNormal;
     }
 
-    @DataBoundSetter public void setIncludeTestSummary(boolean includeTestSummary) {
-	this.includeTestSummary = includeTestSummary;
+    @DataBoundSetter public void setSQSIncludeTestSummary(boolean sqsIncludeTestSummary) {
+	this.sqsIncludeTestSummary = sqsIncludeTestSummary;
     }
 
     @DataBoundSetter public void setNotifyRepeatedFailure(boolean notifyRepeatedFailure) {
 	this.notifyRepeatedFailure = notifyRepeatedFailure;
     }
 
-    @DataBoundSetter public void setIncludeCustomMessage(boolean includeCustomMessage) {
-	this.includeCustomMessage = includeCustomMessage;
+    @DataBoundSetter public void setIncludeCustomMessage(boolean includeCustomSQSMessage) {
+	this.includeCustomSQSMessage = includeCustomSQSMessage;
     }
 
-    @DataBoundSetter public void setCustomMessage(@CheckForNull String customMessage) {
-	this.customMessage = fixNull(customMessage);
+    @DataBoundSetter public void setCustomMessage(@CheckForNull String customSQSMessage) {
+	this.customSQSMessage = fixNull(customSQSMessage);
     }
 
     @DataBoundConstructor
@@ -221,8 +221,8 @@ public class SQSNotifier extends Notifier {
     public SQSNotifier(final String endpoint, final String room, final String buildServerUrl,
 	    final String sendAs, final boolean startNotification, final boolean notifyAborted, final boolean notifyFailure,
 	    final boolean notifyNotBuilt, final boolean notifySuccess, final boolean notifyUnstable, final boolean notifyBackToNormal,
-	    final boolean notifyRepeatedFailure, final boolean includeTestSummary, final CommitInfoChoice commitInfoChoice,
-	    boolean includeCustomMessage, String customMessage, final String secretKey, final String secretKeyId) {
+	    final boolean notifyRepeatedFailure, final boolean sqsIncludeTestSummary, final CommitInfoChoice sqsCommitInfoChoice,
+	    boolean includeCustomSQSMessage, String customSQSMessage, final String secretKey, final String secretKeyId) {
 	super();
 	this.setEndpoint(endpoint);
   this.setSecretKey(secretKey);
@@ -238,10 +238,10 @@ public class SQSNotifier extends Notifier {
 	this.setNotifyUnstable(notifyUnstable);
 	this.setNotifyBackToNormal(notifyBackToNormal);
 	this.setNotifyRepeatedFailure(notifyRepeatedFailure);
-	this.setIncludeTestSummary(includeTestSummary);
-	this.setCommitInfoChoice(commitInfoChoice);
-	this.setIncludeCustomMessage(includeCustomMessage);
-	this.setCustomMessage(customMessage);
+	this.setSQSIncludeTestSummary(sqsIncludeTestSummary);
+	this.setSQSCommitInfoChoice(sqsCommitInfoChoice);
+	this.setIncludeCustomMessage(includeCustomSQSMessage);
+	this.setCustomMessage(customSQSMessage);
     }
 
     public BuildStepMonitor getRequiredMonitorService() {
@@ -370,13 +370,13 @@ public class SQSNotifier extends Notifier {
 	    boolean notifyFailure = "true".equals(sr.getParameter("sqsNotifyFailure"));
 	    boolean notifyBackToNormal = "true".equals(sr.getParameter("sqsNotifyBackToNormal"));
 	    boolean notifyRepeatedFailure = "true".equals(sr.getParameter("sqsNotifyRepeatedFailure"));
-	    boolean includeTestSummary = "true".equals(sr.getParameter("includeTestSummary"));
-	    CommitInfoChoice commitInfoChoice = CommitInfoChoice.forDisplayName(sr.getParameter("slackCommitInfoChoice"));
-	    boolean includeCustomMessage = "on".equals(sr.getParameter("includeCustomMessage"));
-	    String customMessage = sr.getParameter("customMessage");
+	    boolean sqsIncludeTestSummary = "true".equals(sr.getParameter("sqsIncludeTestSummary"));
+	    CommitInfoChoice sqsCommitInfoChoice = CommitInfoChoice.forDisplayName(sr.getParameter("sqsCommitInfoChoice"));
+	    boolean includeCustomSQSMessage = "on".equals(sr.getParameter("includeCustomSQSMessage"));
+	    String customSQSMessage = sr.getParameter("customSQSMessage");
 	    return new SQSNotifier(endpoint, room, buildServerUrl, sendAs, startNotification, notifyAborted,
 		    notifyFailure, notifyNotBuilt, notifySuccess, notifyUnstable, notifyBackToNormal, notifyRepeatedFailure,
-		    includeTestSummary, commitInfoChoice, includeCustomMessage, customMessage, secretKeyId, secretKey);
+		    sqsIncludeTestSummary, sqsCommitInfoChoice, includeCustomSQSMessage, customSQSMessage, secretKeyId, secretKey);
 	}
 
 	@Override
@@ -452,10 +452,10 @@ public class SQSNotifier extends Notifier {
 	private boolean notifyFailure;
 	private boolean notifyBackToNormal;
 	private boolean notifyRepeatedFailure;
-	private boolean includeTestSummary;
+	private boolean sqsIncludeTestSummary;
 	private boolean showCommitList;
-	private boolean includeCustomMessage;
-	private String customMessage;
+	private boolean includeCustomSQSMessage;
+	private String customSQSMessage;
 
 	@DataBoundConstructor
 	public SQSJobProperty(String teamDomain,
@@ -468,10 +468,10 @@ public class SQSNotifier extends Notifier {
 		boolean notifyUnstable,
 		boolean notifyBackToNormal,
 		boolean notifyRepeatedFailure,
-		boolean includeTestSummary,
+		boolean sqsIncludeTestSummary,
 		boolean showCommitList,
-		boolean includeCustomMessage,
-		String customMessage,
+		boolean includeCustomSQSMessage,
+		String customSQSMessage,
     String secretKeyId,
     String secretKey) {
 	    this.endpoint = teamDomain;
@@ -486,10 +486,10 @@ public class SQSNotifier extends Notifier {
 	    this.notifyUnstable = notifyUnstable;
 	    this.notifyBackToNormal = notifyBackToNormal;
 	    this.notifyRepeatedFailure = notifyRepeatedFailure;
-	    this.includeTestSummary = includeTestSummary;
+	    this.sqsIncludeTestSummary = sqsIncludeTestSummary;
 	    this.showCommitList = showCommitList;
-	    this.includeCustomMessage = includeCustomMessage;
-	    this.customMessage = customMessage;
+	    this.includeCustomSQSMessage = includeCustomSQSMessage;
+	    this.customSQSMessage = customSQSMessage;
 	}
 
 	@Exported
@@ -558,8 +558,8 @@ public class SQSNotifier extends Notifier {
 	}
 
 	@Exported
-	public boolean includeTestSummary() {
-	    return includeTestSummary;
+	public boolean sqsIncludeTestSummary() {
+	    return sqsIncludeTestSummary;
 	}
 
 	@Exported
@@ -568,13 +568,13 @@ public class SQSNotifier extends Notifier {
 	}
 
 	@Exported
-	public boolean includeCustomMessage() {
-	    return includeCustomMessage;
+	public boolean includeCustomSQSMessage() {
+	    return includeCustomSQSMessage;
 	}
 
 	@Exported
-	public String getCustomMessage() {
-	    return customMessage;
+	public String getCustomSQSMessage() {
+	    return customSQSMessage;
 	}
 
     }
@@ -628,10 +628,10 @@ public class SQSNotifier extends Notifier {
 		    sqsNotifier.notifyBackToNormal = sqsJobProperty.getNotifyBackToNormal();
 		    sqsNotifier.notifyRepeatedFailure = sqsJobProperty.getNotifyRepeatedFailure();
 
-		    sqsNotifier.includeTestSummary = sqsJobProperty.includeTestSummary();
-		    sqsNotifier.commitInfoChoice = sqsJobProperty.getShowCommitList() ? CommitInfoChoice.AUTHORS_AND_TITLES : CommitInfoChoice.NONE;
-		    sqsNotifier.includeCustomMessage = sqsJobProperty.includeCustomMessage();
-		    sqsNotifier.customMessage = sqsJobProperty.getCustomMessage();
+		    sqsNotifier.sqsIncludeTestSummary = sqsJobProperty.sqsIncludeTestSummary();
+		    sqsNotifier.sqsCommitInfoChoice = sqsJobProperty.getShowCommitList() ? CommitInfoChoice.AUTHORS_AND_TITLES : CommitInfoChoice.NONE;
+		    sqsNotifier.includeCustomSQSMessage = sqsJobProperty.includeCustomSQSMessage();
+		    sqsNotifier.customSQSMessage = sqsJobProperty.getCustomSQSMessage();
         sqsNotifier.room = sqsJobProperty.getRoom();
         sqsNotifier.endpoint = sqsJobProperty.getEndpoint();
 		}

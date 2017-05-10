@@ -66,11 +66,11 @@ public class ActiveNotifier implements FineGrainedNotifier {
 			}
 		}
 
-		String changes = getChanges(build, notifier.includeCustomMessage());
+		String changes = getChanges(build, notifier.includeCustomSQSMessage());
 		if (changes != null) {
 			notifyStart(build, changes);
 		} else {
-			notifyStart(build, getBuildStatusMessage(build, false, notifier.includeCustomMessage()));
+			notifyStart(build, getBuildStatusMessage(build, false, notifier.includeCustomSQSMessage()));
 		}
 	}
 
@@ -110,15 +110,15 @@ public class ActiveNotifier implements FineGrainedNotifier {
 					&& notifier.getNotifyBackToNormal())
 				|| (result == Result.SUCCESS && notifier.getNotifySuccess())
 				|| (result == Result.UNSTABLE && notifier.getNotifyUnstable())) {
-			getSQS(r).publish(getBuildStatusMessage(r, notifier.includeTestSummary(),
-						notifier.includeCustomMessage()), getBuildColor(r));
-			if (notifier.getCommitInfoChoice().showAnything()) {
+			getSQS(r).publish(getBuildStatusMessage(r, notifier.sqsIncludeTestSummary(),
+						notifier.includeCustomSQSMessage()), getBuildColor(r));
+			if (notifier.getSQSCommitInfoChoice().showAnything()) {
 				getSQS(r).publish(getCommitList(r), getBuildColor(r));
 			}
 				}
 	}
 
-	String getChanges(AbstractBuild r, boolean includeCustomMessage) {
+	String getChanges(AbstractBuild r, boolean includeCustomSQSMessage) {
 		if (!r.hasChangeSetComputed()) {
 			logger.info("No change set computed...");
 			return null;
@@ -147,7 +147,7 @@ public class ActiveNotifier implements FineGrainedNotifier {
 		message.append(files.size());
 		message.append(" file(s) changed)");
 		message.appendOpenLink();
-		if (includeCustomMessage) {
+		if (includeCustomSQSMessage) {
 			message.appendCustomMessage();
 		}
 		return message.toString();
@@ -179,11 +179,11 @@ public class ActiveNotifier implements FineGrainedNotifier {
 		Set<String> commits = new HashSet<String>();
 		for (Entry entry : entries) {
 			StringBuffer commit = new StringBuffer();
-			CommitInfoChoice commitInfoChoice = notifier.getCommitInfoChoice();
-			if (commitInfoChoice.showTitle()) {
+			CommitInfoChoice sqsCommitInfoChoice = notifier.getSQSCommitInfoChoice();
+			if (sqsCommitInfoChoice.showTitle()) {
 				commit.append(entry.getMsg());
 			}
-			if (commitInfoChoice.showAuthor()) {
+			if (sqsCommitInfoChoice.showAuthor()) {
 				commit.append(" [").append(entry.getAuthor().getDisplayName()).append("]");
 			}
 			commits.add(commit.toString());
@@ -205,15 +205,15 @@ public class ActiveNotifier implements FineGrainedNotifier {
 		}
 	}
 
-	String getBuildStatusMessage(AbstractBuild r, boolean includeTestSummary, boolean includeCustomMessage) {
+	String getBuildStatusMessage(AbstractBuild r, boolean sqsIncludeTestSummary, boolean includeCustomSQSMessage) {
 		MessageBuilder message = new MessageBuilder(notifier, r);
 		message.appendStatusMessage();
 		message.appendDuration();
 		message.appendOpenLink();
-		if (includeTestSummary) {
+		if (sqsIncludeTestSummary) {
 			message.appendTestSummary();
 		}
-		if (includeCustomMessage) {
+		if (includeCustomSQSMessage) {
 			message.appendCustomMessage();
 		}
 		return message.toString();
@@ -363,7 +363,7 @@ public class ActiveNotifier implements FineGrainedNotifier {
 		}
 
 		public MessageBuilder appendCustomMessage() {
-			String customMessage = notifier.getCustomMessage();
+			String customSQSMessage = notifier.getCustomSQSMessage();
 			EnvVars envVars = new EnvVars();
 			try {
 				envVars = build.getEnvironment(new LogTaskListener(logger, INFO));
@@ -373,7 +373,7 @@ public class ActiveNotifier implements FineGrainedNotifier {
 				logger.log(SEVERE, e.getMessage(), e);
 			}
 			message.append("\n");
-			message.append(envVars.expand(customMessage));
+			message.append(envVars.expand(customSQSMessage));
 			return this;
 		}
 

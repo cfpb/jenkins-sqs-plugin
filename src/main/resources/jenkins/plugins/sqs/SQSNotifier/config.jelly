@@ -36,19 +36,19 @@
                         checked="${instance.getNotifyRepeatedFailure()}"/>
         </f:entry>
         <f:entry title="Include Test Summary">
-            <f:checkbox name="includeTestSummary" value="true" checked="${instance.includeTestSummary()}"/>
+            <f:checkbox name="sqsIncludeTestSummary" value="true" checked="${instance.sqsIncludeTestSummary()}"/>
         </f:entry>
 
-        <f:optionalBlock name="includeCustomMessage" title="Include Custom Message" checked="${instance.includeCustomMessage()}">
+        <f:optionalBlock name="includeCustomSQSMessage" title="Include Custom Message" checked="${instance.includeCustomSQSMessage()}">
             <f:entry title="Custom Message" help="/plugin/sqs/help-projectConfig-sqsCustomMessage.html">
-                <f:textarea name="customMessage" value="${instance.getCustomMessage()}"/>
+                <f:textarea name="customSQSMessage" value="${instance.getCustomSQSMessage()}"/>
             </f:entry>
         </f:optionalBlock>
 
         <f:entry title="Notification message includes" description="What commit information to include into notification message">
-            <select class="setting-input" name="slackCommitInfoChoice">
+            <select class="setting-input" name="sqsCommitInfoChoice">
                 <j:forEach var="i" items="${descriptor.COMMIT_INFO_CHOICES}">
-                    <f:option selected="${instance.getCommitInfoChoice()==i}">${i.getDisplayName()}</f:option>
+                    <f:option selected="${instance.getSQSCommitInfoChoice()==i}">${i.getDisplayName()}</f:option>
                 </j:forEach>
             </select>
         </f:entry>

@@ -30,9 +30,9 @@ public enum CommitInfoChoice {
     }
 
     public static CommitInfoChoice forDisplayName(String displayName) {
-        for (CommitInfoChoice commitInfoChoice : values()) {
-            if (commitInfoChoice.getDisplayName().equals(displayName)) {
-                return commitInfoChoice;
+        for (CommitInfoChoice sqsCommitInfoChoice : values()) {
+            if (sqsCommitInfoChoice.getDisplayName().equals(displayName)) {
+                return sqsCommitInfoChoice;
             }
         }
         return null;
