@@ -62,7 +62,7 @@ public class StandardSQSService implements SQSService {
     public boolean publish(String message, String color) {
         boolean result = true;
         String url = endpoint;
-        String userId = "jenkins";
+        String userId = "Jenkins";
         for (String userAndRoomId : roomIds) {
             String roomId = "";
             String[] splitUserAndRoomId = userAndRoomId.split("@");
@@ -101,7 +101,7 @@ public class StandardSQSService implements SQSService {
                           "user",
                           new MessageAttributeValue()
                               .withDataType("String")
-                              .withStringValue("Jenkins")
+                              .withStringValue(userId)
                         )
                         .addMessageAttributesEntry(
                           "room",
