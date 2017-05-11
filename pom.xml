@@ -235,24 +235,14 @@
     -->
     <developers>
         <developer>
-            <id>jovandeginste</id>
-            <name>Jo Vandeginste</name>
-            <email>jo.vandeginste@gmail.com</email>
-            <url>https://github.com/jovandeginste</url>
+            <id>contolini</id>
+            <name>Chris Contolini</name>
+            <email>chris@contolini.com</email>
+            <url>https://github.com/contolini</url>
             <roles>
                 <role>maintainer</role>
             </roles>
-            <timezone>Europe/Brussels</timezone>
-        </developer>
-        <developer>
-            <id>eirikwang</id>
-            <name>Eirik Wang</name>
-            <email>eirilwan@gmail.com</email>
-            <url>https://github.com/eirikwang</url>
-            <roles>
-                <role>committer</role>
-            </roles>
-            <timezone>Europe/Brussels</timezone>
+            <timezone>America/Los_Angeles</timezone>
         </developer>
     </developers>
 </project>
