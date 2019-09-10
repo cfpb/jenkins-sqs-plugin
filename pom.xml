@@ -59,8 +59,14 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>junit</artifactId>
-            <version>1.18</version>
+                <version>1.24</version>
             <optional>true</optional>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jenkins-ci.plugins/scm-api -->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>scm-api</artifactId>
+            <version>2.0.8</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
